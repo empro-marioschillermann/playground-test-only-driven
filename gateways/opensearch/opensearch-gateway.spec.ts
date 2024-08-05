@@ -60,25 +60,32 @@ describe("OpenSearchGateway", () => {
   });
 
   describe("getEntryById", () => {
+    type MyDocument = {
+      title: string;
+      content: string;
+    };
     it("should get an entry by ID", async () => {
       openSearchClient.get.mockResolvedValue({
         body: {
           _id: "1",
+          _source: { title: "My Title", content: "My Content" },
         },
       } as never);
-      const entry = await openSearchGateway.getEntryById("test-index", "1");
-
-      expect(entry._id).toBe("1");
+      const entry = await openSearchGateway.getEntryById<MyDocument>(
+        "test-index",
+        "1"
+      );
+      expect(entry).toStrictEqual({ title: "My Title", content: "My Content" });
     });
 
     it("should handle error", async () => {
+      // stubs
       openSearchClient.get.mockRejectedValue(new Error("Error") as never);
 
-      try {
-        await openSearchGateway.getEntryById("test-index", "1");
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-      }
+      // when & then
+      await expect(
+        openSearchGateway.getEntryById<MyDocument>("invalid-index", "1")
+      ).rejects.toThrow(Error);
     });
   });
 });
