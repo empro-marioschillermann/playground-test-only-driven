@@ -1,13 +1,14 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppService, Document } from "./app.service";
 import { OpenSearchGateway } from "../../../gateways/opensearch/opensearch-gateway";
-import { mock } from "jest-mock-extended";
+import { mock, MockProxy } from "jest-mock-extended";
 
 describe("AppService", () => {
-  const openSearchGateway = mock<OpenSearchGateway<Document>>();
+  let openSearchGateway: MockProxy<OpenSearchGateway<Document>>;
   let service: AppService;
 
   beforeEach(async () => {
+    openSearchGateway = mock<OpenSearchGateway<Document>>();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AppService,
