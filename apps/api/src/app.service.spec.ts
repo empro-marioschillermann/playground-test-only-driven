@@ -4,7 +4,7 @@ import { OpenSearchGateway } from "../../../gateways/opensearch/opensearch-gatew
 import { mock } from "jest-mock-extended";
 
 describe("AppService", () => {
-  const openSearchGateway = mock<OpenSearchGateway>();
+  const openSearchGateway = mock<OpenSearchGateway<Document>>();
   let service: AppService;
 
   beforeEach(async () => {

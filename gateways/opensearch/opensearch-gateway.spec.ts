@@ -11,8 +11,9 @@ import { Client } from "@opensearch-project/opensearch";
 import { OpenSearchGateway } from "./opensearch-gateway";
 
 describe("OpenSearchGateway", () => {
+  type Entity = {};
   const openSearchClient = mockDeep<Client>();
-  const openSearchGateway = new OpenSearchGateway(openSearchClient);
+  const openSearchGateway = new OpenSearchGateway<Entity>(openSearchClient);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -71,10 +72,7 @@ describe("OpenSearchGateway", () => {
           _source: { title: "My Title", content: "My Content" },
         },
       } as never);
-      const entry = await openSearchGateway.getEntryById<MyDocument>(
-        "test-index",
-        "1"
-      );
+      const entry = await openSearchGateway.getEntryById("test-index", "1");
       expect(entry).toStrictEqual({ title: "My Title", content: "My Content" });
     });
 
@@ -84,7 +82,7 @@ describe("OpenSearchGateway", () => {
 
       // when & then
       await expect(
-        openSearchGateway.getEntryById<MyDocument>("invalid-index", "1")
+        openSearchGateway.getEntryById("invalid-index", "1")
       ).rejects.toThrow(Error);
     });
   });
