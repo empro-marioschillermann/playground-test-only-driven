@@ -1,3 +1,9 @@
 # Test Only Driven
 
-The goal is only to write the tests and Copilot should create the complete implementation from them.
+## Proof of concept
+
+With the existing tests you can write the corresponding implementations with Copilot.
+
+You can write something like:
+
+> Write me the implementations for my tests.
